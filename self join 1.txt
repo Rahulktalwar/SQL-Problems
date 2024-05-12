@@ -1,0 +1,73 @@
+Q.Find employees with salary more than manager's salary.
+
+create table emp
+     (emp_id int,
+     emp_name varchar(255),
+     salary int,
+     manager_id int);
+
+
+insert into emp
+values (1, "Ankit", 10000, 4);
+insert into emp
+values (2, "Mohit", 15000, 5);
+insert into emp
+values (3, "Vikas", 10000, 4);
+insert into emp
+values (4, "Rohit", 5000, 2);
+insert into emp
+values (5, "Mudit", 12000, 6);
+insert into emp
+values (6, "Agam", 12000, 2);
+insert into emp
+values (7, "Sanjay", 5000, 2);
+insert into emp
+values (8, "Ashish", 9000, 2);
+
++--------+----------+--------+------------+
+| emp_id | emp_name | salary | manager_id |
++--------+----------+--------+------------+
+|      1 | Ankit    |  10000 |          4 |
+|      2 | Mohit    |  15000 |          5 |
+|      3 | Vikas    |  10000 |          4 |
+|      4 | Rohit    |   5000 |          2 |
+|      5 | Mudit    |  12000 |          6 |
+|      6 | Agam     |  12000 |          2 |
+|      7 | Sanjay   |   5000 |          2 |
+|      8 | Ashish   |   9000 |          2 |
++--------+----------+--------+------------+
+ 
+                   EMP
+
+
+Solution:
+
+select *
+from emp e
+join emp m on e.manager_id=m.emp_id ;
++--------+----------+--------+------------+--------+----------+--------+------------+
+| emp_id | emp_name | salary | manager_id | emp_id | emp_name | salary | manager_id |
++--------+----------+--------+------------+--------+----------+--------+------------+
+|      8 | Ashish   |   9000 |          2 |      2 | Mohit    |  15000 |          5 |
+|      7 | Sanjay   |   5000 |          2 |      2 | Mohit    |  15000 |          5 |
+|      6 | Agam     |  12000 |          2 |      2 | Mohit    |  15000 |          5 |
+|      4 | Rohit    |   5000 |          2 |      2 | Mohit    |  15000 |          5 |
+|      3 | Vikas    |  10000 |          4 |      4 | Rohit    |   5000 |          2 |
+|      1 | Ankit    |  10000 |          4 |      4 | Rohit    |   5000 |          2 |
+|      2 | Mohit    |  15000 |          5 |      5 | Mudit    |  12000 |          6 |
+|      5 | Mudit    |  12000 |          6 |      6 | Agam     |  12000 |          2 |
++--------+----------+--------+------------+--------+----------+--------+------------+
+
+
+select e.emp_id, e.emp_name, e.salary emp_salary, m.emp_name manager_name, m.salary manager_salary
+     from emp e
+     join emp m on e.manager_id=m.emp_id
+     where e.salary > m.salary
+     order by e.emp_id ;
++--------+----------+------------+--------------+----------------+
+| emp_id | emp_name | emp_salary | manager_name | manager_salary |
++--------+----------+------------+--------------+----------------+
+|      1 | Ankit    |      10000 | Rohit        |           5000 |
+|      2 | Mohit    |      15000 | Mudit        |          12000 |
+|      3 | Vikas    |      10000 | Rohit        |           5000 |
++--------+----------+------------+--------------+----------------+
