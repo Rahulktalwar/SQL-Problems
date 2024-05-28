@@ -34,7 +34,6 @@ INSERT INTO FOOTER VALUES (4, 'Toyota Rav4', NULL, 15, NULL);
 INSERT INTO FOOTER VALUES (5, 'Kia Sportage', NULL, NULL, 18); 
 
 
-
 Sol : 
 select * from 
 (select car 
@@ -59,8 +58,3 @@ where height is not null
 order by id desc
 limit 1
 ) height ;
-
-
-
-
-
