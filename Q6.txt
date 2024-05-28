@@ -1,0 +1,77 @@
+VIDEO #6 - Student Performance								
+"PROBLEM STATEMENT:
+You are given a table having the marks of one student in every test. 
+You have to output the tests in which the student has improved his performance. 
+For a student to improve his performance he has to score more than the previous test.
+Provide 2 solutions, one including the first test score and second excluding it."								
+
+student_tests : 
++---------+-------+------+
+| test_id | marks | prev |
++---------+-------+------+
+|     100 |    55 | NULL |
+|     101 |    55 |   55 |
+|     102 |    60 |   55 |
+|     103 |    58 |   60 |
+|     104 |    40 |   58 |
+|     105 |    50 |   40 |
++---------+-------+------+								
+								
+Sol1: 
++---------+-------+
+| test_id | marks |
++---------+-------+
+|     100 |    55 |
+|     102 |    60 |
+|     105 |    50 |
++---------+-------+	
+
+Sol2: 
++---------+-------+
+| test_id | marks |
++---------+-------+
+|     102 |    60 |
+|     105 |    50 |
++---------+-------+						
+								
+								
+drop table if exists  student_tests;
+create table student_tests
+(
+	test_id		int,
+	marks		int
+);
+insert into student_tests values(100, 55);
+insert into student_tests values(101, 55);
+insert into student_tests values(102, 60);
+insert into student_tests values(103, 58);
+insert into student_tests values(104, 40);
+insert into student_tests values(105, 50);
+
+select * from student_tests;
+
+Sol1:
+ with cte as (
+ select test_id,
+    marks,
+     lag(marks) over() prev
+     from student_tests)
+	 
+	 select test_id, marks
+	 from cte
+	 where marks > prev or prev is null;
+
+Sol2:
+ with cte as (
+ select test_id,
+    marks,
+     lag(marks) over() prev
+     from student_tests)
+	 
+	 select test_id, marks
+	 from cte
+	 where marks > prev;
+
+
+
+
