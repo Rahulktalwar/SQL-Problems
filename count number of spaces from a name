@@ -1,0 +1,3 @@
+name: Rahul Kenchappa Talwar
+
+select length(name) - length(replace(name,' ','')) as spaces ;
