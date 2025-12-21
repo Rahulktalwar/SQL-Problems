@@ -1,0 +1,2 @@
+select current_date(),  year(current_date),month(current_date()), day(current_date()), dayname(current_date()), 
+dayofweek(current_date()), dayofmonth(current_date()),  dayofyear(current_date()) ;
