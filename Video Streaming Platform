@@ -1,0 +1,7 @@
+SQL 
+select duration, genre, release_year, title, 
+  video_id, view_count
+from video_stream
+where view_count > 1000000 
+and release_year >= extract(year from current_date) - 6 
+order by duration ;
