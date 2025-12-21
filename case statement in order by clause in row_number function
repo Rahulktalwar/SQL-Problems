@@ -1,0 +1,14 @@
+producer_code (A1,B2)
+
+A1 = Primary business, Primary residence, Alternate address, Special address
+B2 = Primary residence, Alternate address, Special address
+
+row_number() over(partition by producer_code 
+order by 
+case when address='Primary business' then 1
+     when address='Primary residence' then 2
+     when address='Alternate address' then 3
+     when address='Special address' then 4
+     else 5
+     end
+) as address_rank
