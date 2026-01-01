@@ -1,0 +1,1 @@
+select length('Rahul Talwar') - length(replace('Rahul Talwar',' ','')) as name   ;
