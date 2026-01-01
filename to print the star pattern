@@ -1,0 +1,11 @@
+----to print the star pattern
+with recursive cte as (
+select 1 as num
+union all
+select num+1
+from cte 
+where num < 5
+
+)
+
+select repeat('* ', num) as stars from cte  ;
