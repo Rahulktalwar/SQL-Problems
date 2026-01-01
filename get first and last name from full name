@@ -1,0 +1,4 @@
+
+
+select 'RAHUL TALWAR' as name , substring('Rahul Talwar',1,locate(' ','Rahul Talwar')) as first_name ,
+substring('Rahul Talwar',locate(' ','Rahul Talwar'),length('Rahul Talwar')) as last_name   ;

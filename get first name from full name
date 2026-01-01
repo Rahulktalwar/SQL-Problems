@@ -1,2 +1,0 @@
-MySQL version
-select substring("Rahul Talwar",1,locate(" ","Rahul Talwar")) as f_name;
