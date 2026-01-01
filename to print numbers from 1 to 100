@@ -1,0 +1,9 @@
+with recursive cte as (
+select 1 as num
+union all
+select num+1
+from cte    
+where num < 100 ) 
+
+
+select * from cte ;
