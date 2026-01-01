@@ -1,0 +1,2 @@
+select split_part('rahul talwar',' ',1) as first_name,
+split_part('rahul talwar',' ',2) as last_name ; 
