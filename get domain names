@@ -2,3 +2,7 @@ select split_part('ram@gmail.com','@',2) as domain_name   ;
 
 
 select split_part('rahul@tata.com','@',2) as domain_name ;
+
+
+---using substring
+select substring('rahul@tata.com',locate('@','rahul@tata.com')+1,length('rahul@tata.com')) as domain_name   ;
