@@ -1,0 +1,35 @@
+select * from auto_prem_claims  ;
+
+
+select damage_amount, row_number() over(order by damage_amount) as rn,
+rank() over(order by damage_amount) as rank,
+dense_rank() over(order by damage_amount) as dense_rank
+from auto_prem_claims    ;
+
+
+select
+annual_premium,contract_status, sum(annual_premium) over(partition by contract_status order by annual_premium desc) as sum
+from auto_prem_claims  ;
+
+
+select
+annual_premium,
+max(cast(annual_premium as double)) over() as max
+from auto_prem_claims   ;
+
+
+select power,contract_status, max(cast(power as double)) over(partition by contract_status order by power desc ) as max
+from auto_prem_claims 
+where power is not null    
+;
+
+
+select power,contract_status, min(cast(power as double)) over(partition by contract_status order by power desc) as min 
+from auto_prem_claims 
+where power is not null   
+;
+
+
+select power,contract_status, count(cast(power as double)) over(partition by contract_status order by power desc) as count 
+from auto_prem_claims 
+where power is not null     ;
