@@ -33,3 +33,8 @@ where power is not null
 select power,contract_status, count(cast(power as double)) over(partition by contract_status order by power desc) as count 
 from auto_prem_claims 
 where power is not null     ;
+
+
+select power, ntile(5) over(order by power) as buckets
+from auto_prem_claims 
+where power between 110 and 130  ;
