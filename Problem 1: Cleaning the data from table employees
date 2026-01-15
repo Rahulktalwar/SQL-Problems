@@ -1,0 +1,13 @@
+select Employee_ID emp_id, 
+concat(First_Name,' ',Last_Name) as emp_name,
+coalesce(AGE,21) as age ,
+split_part(Department_Region,'-',1) as department ,
+split_part(Department_Region,'-',2) as region,
+Status ,
+Join_Date,
+replace(Salary,'N/A','0.00') as salary,
+Email,
+regexp_replace(Phone,'[^0-9]','') as phone_num,
+Performance_Score,
+remote_work
+from raw_gcd.employees   ;
