@@ -1,0 +1,39 @@
+DROP TABLE trades ;
+
+DROP TABLE quotes ;
+
+CREATE TABLE trades (
+  t_symbol VARCHAR(1),
+  t_id TINYINT,
+  t_time TIMESTAMP,
+  t_qty INT
+);
+
+CREATE TABLE quotes (
+  q_symbol VARCHAR(1),
+  q_id TINYINT,
+  q_time TIMESTAMP,
+  q_value FLOAT
+);
+
+TRUNCATE TABLE trades ;
+
+INSERT INTO trades VALUES
+  ('A',1,'09:15:00',100),
+  ('A',2,'09:16:00',50),
+  ('B',1,'09:17:00',75),
+  ('B',2,'09:18:00',25)  ;
+
+INSERT INTO quotes VALUES
+  ('A',1,'09:14:00',151.75),
+  ('B',1,'09:16:00',162.66)  ;
+
+
+  select * from trades ;
+
+  select * from quotes ;
+
+  select t_symbol, t_id,t_time,t_qty, q_time, q_value
+  from trades t 
+  as of join quotes q
+match condition (t_time>=q_time )  ;
