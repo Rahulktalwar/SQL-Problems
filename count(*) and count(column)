@@ -1,0 +1,5 @@
+select count(*) from raw_gcd.contracts ; 
+--15000
+
+select count(csp) from raw_gcd.contracts ; 
+---13228
