@@ -1,0 +1,8 @@
+difference between 
+
+1.   row_number() over(partition by div_cd, grp_id, start_dt order by end_dt desc )   
+
+
+2.   row_number() over(partition by grp_id, div_cd, start_dt order by end_dt desc) 
+
+In terms of the final result set, there is no difference.
