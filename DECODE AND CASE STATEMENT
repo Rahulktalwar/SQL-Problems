@@ -1,0 +1,16 @@
+While DECODE is concise, most modern SQL developers (and other databases like PostgreSQL or SQL Server) prefer
+the CASE statement because it is easier to read and part of the SQL standard:
+
+SELECT DECODE( address,'302668', add1,'78564', add2, '785456', add3) as st_cd
+FROM CUSTOMERS ;
+
+
+
+SELECT 
+    CASE address
+        WHEN '302668' THEN add1
+        WHEN '78564'  THEN add2
+        WHEN '785456' THEN add3
+        ELSE NULL -- Optional
+    END AS st_cd
+FROM CUSTOMERS;
