@@ -1,0 +1,47 @@
+Business Use Case:
+TechTFQ Gym management needs monthly headcounts for each gym location to plan instructor budgets. Each member checks-in with their membership_id at their branch.
+
+
+
+Your Task:
+Return each branch_id and the number of unique members checked in at each.
+
+
+
+Input Table Structure:
+
+checkins
++-----------+-----------+-----------+
+| checkin_id| member_id | branch_id |
++-----------+-----------+-----------+
+| INT       | INT       | INT       |
++-----------+-----------+-----------+
+
+
+Sample Data:
+
+checkins
++-----------+-----------+-----------+
+| checkin_id| member_id | branch_id |
++-----------+-----------+-----------+
+| 7001      | 501       | 1         |
+| 7002      | 502       | 1         |
+| 7003      | 503       | 2         |
+| 7004      | 501       | 1         |
++-----------+-----------+-----------+
+
+
+Expected Output:
+
++----------+-------------------+
+| branch_id| member_count      |
++----------+-------------------+
+| 1        | 2                 |
+| 2        | 1                 |
++----------+-------------------+
+
+SOL:
+
+SELECT branch_id, count(distinct member_id)
+from checkins
+group by branch_id;
