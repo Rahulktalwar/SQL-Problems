@@ -1,0 +1,53 @@
+Business Scenario:
+HR needs to report the number of direct reports each manager in the organization has, based on a hierarchical employee-manager dataset. This pattern is key in analyzing span-of-control and management effectiveness.
+
+
+Problem Statement:
+Given the employee table below, output each manager's name and the count of employees they manage directly (not recursively).
+
+
+
+Table: employee_managers
+
++----+-----------+---------+
+| id | name      | manager |
++----+-----------+---------+
+| 1  | Sundar    | (null)  |
+| 2  | Kent      | 1       |
+| 3  | Ruth      | 1       |
+| 4  | Alison    | 1       |
+| 5  | Clay      | 2       |
+| 6  | Ana       | 2       |
+| 7  | Philipp   | 3       |
+| 8  | Prabhakar | 4       |
+| 9  | Hiroshi   | 4       |
+| 10 | Jeff      | 4       |
+| 11 | Thomas    | 1       |
+| 12 | John      | 15      |
+| 13 | Susan     | 15      |
+| 14 | Lorraine  | 15      |
+| 15 | Larry     | 1       |
++----+-----------+---------+
+
+
+Expected Output:
+
++---------+-------------------+
+| manager | no_of_employees   |
++---------+-------------------+
+| Sundar  | 5                 |
+| Alison  | 3                 |
+| Larry   | 3                 |
+| Kent    | 2                 |
+| Ruth    | 1                 |
++---------+-------------------+
+
+
+
+SOL: 
+
+SELECT  m.name as manager, count(e.id)
+from employee_managers e
+join employee_managers m on m.id=e.manager   
+group by 1
+order by 2 desc;
