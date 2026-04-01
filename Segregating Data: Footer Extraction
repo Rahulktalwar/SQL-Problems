@@ -1,0 +1,71 @@
+Business Scenario:
+Suppose you are working in a data cleaning team for a logistics company. Their raw import logs generate sparse records: some rows only contain partial information (sometimes just a name, sometimes just a location, or only an ID). Your task is to design two queries, one that extracts the "header row" (earliest record based on minimal ID, combining all its non-null properties), and another the "footer row" (latest record based on maximal ID, combining all its non-null properties).
+
+
+Problem Statement:
+Given a table of possibly sparse records (ID, NAME, LOCATION), generate:
+
+Output (Footer): Returns a single row with the largest ID, and the last non-null NAME and LOCATION found when moving from bottom upwards.
+
+
+Your Task:
+Write a query to return the footer record as described above.
+
+
+
+Table Structure: q4_data
+
++---------+--------------+
+| COLUMN  | TYPE         |
++---------+--------------+
+| id      | INT          |
+| name    | VARCHAR(20)  |
+| location| VARCHAR(20)  |
++---------+--------------+
+
+
+Input Data:
+
++----+-------+----------+
+| id | name  | location |
++----+-------+----------+
+| 1  | NULL  | NULL     |
+| 2  | David | NULL     |
+| 3  | NULL  | London   |
+| 4  | NULL  | NULL     |
+| 5  | David | NULL     |
++----+-------+----------+
+
+
+Expected Output:
+
++----+-------+----------+
+| id | name  | location |
++----+-------+----------+
+| 5  | David | London   |
++----+-------+----------+
+
+SOL :
+1)  
+SELECT max(id) as id ,min(name) as name, max(location) as location
+FROM q4_data  ;
+
+
+2)
+with cte as (
+SELECT max(id) as id,name, location
+from q4_data 
+where name is not null or location is not null
+group by name, location
+)
+
+select id, 
+first_value(name) over() as name, 
+last_value(location) over() as location
+from cte 
+order by id desc 
+limit 1    ;
+
+
+
+
