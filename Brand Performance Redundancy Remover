@@ -1,0 +1,78 @@
+BUSINESS SCENARIO:
+TechTFQ Electronics, a major analytics firm, conducts annual performance studies comparing pairs of major tech brands across multiple custom metrics. To keep reports clean and actionable, the analytics team must avoid showing redundant symmetric rows, such as both "apple vs samsung" and "samsung vs apple" when they are effectively the same comparison in a given year. The goal is to retain a single representative row for such redundant pairs, while keeping all comparisons that are genuinely different or unpaired.
+
+
+PROBLEM STATEMENT:
+You are given a table where each row represents a comparison between two brands in a given year, along with four numeric metric values. Some pairs appear twice in symmetric form (brand1/brand2 and brand2/brand1) with identical metrics in the same year, which are redundant. Other pairs appear twice but with different metric values, and must both be retained. Some rows also have only one brand specified (a “singleton” comparison), which must always be retained.
+
+
+
+WRITE A QUERY TO:
+
+Keep only one row for any symmetric pair where both brands, year, and all four metric values are effectively identical (ignoring the order of brand1 and brand2).
+Keep both rows for a brand pair in the same year if any metric value differs.
+Keep all rows where there is no symmetric counterpart (for example, where brand2 is NULL).
+
+
+YOUR TASK:
+Return a result set of brand comparisons where each retained row is either:
+
+A unique brand pair/year/metric combination with no redundant symmetric duplicate, or
+One of two rows for a brand pair in the same year where at least one metric differs.
+
+
+INPUT TABLE: brands
+
++----------+----------+
+| COLUMN   | TYPE     |
++----------+----------+
+| brand1   | VARCHAR  |
+| brand2   | VARCHAR  |
+| year     | INT      |
+| custom1  | INT      |
+| custom2  | INT      |
+| custom3  | INT      |
+| custom4  | INT      |
++----------+----------+
+
+EXPECTED OUTPUT:
+
++----------+----------+------+---------+---------+---------+---------+
+| brand1   | brand2   | year | custom1 | custom2 | custom3 | custom4 |
++----------+----------+------+---------+---------+---------+---------+
+| apple    | samsung  | 2020 |   3     |   7     |   3     |   7     |
+| apple    | samsung  | 2021 |   2     |   6     |   5     |   1     |
+| samsung  | apple    | 2021 |   5     |   1     |   2     |   6     |
+| oneplus  | nothing  | 2020 |  12     |  16     |   7     |   9     |
+| google   | (null)   | 2020 |   8     |  11     | (null)  | (null)  |
+| xiaomi   | oppo     | 2020 |   6     |  13     |   6     |  13     |
+| vivo     | apple    | 2021 |   2     |   5     |   2     |   5     |
+| sony     | lg       | 2021 |  14     |   2     |  15     |   1     |
+| lg       | sony     | 2021 |  14     |   2     |   1     |   1     |
+| sony     | lg       | 2022 |  10     |  10     |   9     |   9     |
+| honor    | (null)   | 2022 |   9     |   5     | (null)  | (null)  |
++----------+----------+------+---------+---------+---------+---------+
+
+
+NOTES:
+You must use SQL logic (such as canonical brand ordering and window functions) to identify symmetric duplicate rows.
+Rows where a brand has no counterpart in the same year (for example, where brand2 is NULL) must always be included in the final output.
+
+
+SOL:
+
+WITH master as (
+SELECT brand1, brand2, year, 
+custom1, custom2, custom3, custom4,
+row_number() over(partition by least(brand1,brand2),
+GREATEST(brand1,brand2),year, 
+custom1, custom2, custom3, custom4 
+order by brand1,brand2,year) as rn 
+from brands
+)
+
+SELECT brand1, brand2, year, 
+custom1, custom2, custom3, custom4
+FROM MASTER
+where rn=1
+order by year,brand1, brand2
