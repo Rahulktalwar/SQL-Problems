@@ -1,0 +1,9 @@
+WITH CTE AS (
+  SELECT  '2025-01-03' as A,    '2026/04/07' AS B  
+)
+ 
+SELECT *,
+to_date(B, 'yyyy/MM/dd') as C,
+date_format(A, 'yyyy/MM/dd') as D
+ 
+FROM CTE
