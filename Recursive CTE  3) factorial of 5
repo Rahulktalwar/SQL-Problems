@@ -1,0 +1,13 @@
+with recursive cte as (
+select 1 as num , 1 as fact 
+
+union all
+
+select num+1 as num, num *fact  
+from cte 
+where num < 6 
+
+)
+
+
+select max(fact) as factorial from cte   ;
