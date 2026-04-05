@@ -1,0 +1,68 @@
+Business Scenario:
+A company has a management structure where each employee reports to exactly one manager (except for the CEO). The HR team wants to know which employees belong to which "teams", where a team is all direct and indirect reports of each direct report to the CEO (excluding the CEO). You must list, for each such team, all its members in a single string, shown team by team in the output.
+
+
+Problem Statement:
+Given the employee-manager table below, show one row for each "team", every set of direct reports to the CEO (Elon), plus all employees under them. Each row should display "Team N" (numbered by order) and a comma-separated list of all team members (including the manager leading the team, but excluding the CEO).
+
+
+
+Table: company
+
++----------+----------+
+| employee | manager  |
++----------+----------+
+| Elon     | (null)   |
+| Ira      | Elon     |
+| Bret     | Elon     |
+| Earl     | Elon     |
+| James    | Ira      |
+| Drew     | Ira      |
+| Mark     | Bret     |
+| Phil     | Mark     |
+| Jon      | Mark     |
+| Omid     | Earl     |
++----------+----------+
+
+
+Expected Output:
+
++--------+----------------------------------+
+| teams  | members                          |
++--------+----------------------------------+
+| Team 1 | Elon, Bret, Mark, Phil, Jon      |
+| Team 2 | Elon, Earl, Omid                 |
+| Team 3 | Elon, Ira, James, Drew           |
++--------+----------------------------------+
+
+
+ SOL:
+
+
+WITH RECURSIVE EmployeeHierarchy AS (
+
+SELECT employee, manager, employee as Team_Lead
+FROM COMPANY 
+where manager='Elon'   
+
+UNION ALL 
+
+SELECT 
+        c.employee, 
+        c.manager, 
+        eh.team_lead 
+    FROM company c
+    INNER JOIN EmployeeHierarchy eh ON c.manager = eh.employee  
+
+)
+
+SELECT 
+    CONCAT('Team ', DENSE_RANK() OVER (ORDER BY team_lead)) AS teams,
+    -- We prepend 'Elon' to the list as per your expected output
+    CONCAT('Elon, ', team_lead, 
+           CASE WHEN COUNT(employee) > 1 THEN ', ' ELSE '' END,
+           STRING_AGG(CASE WHEN employee != team_lead THEN employee END, ', ')
+    ) AS members
+FROM EmployeeHierarchy
+GROUP BY team_lead
+ORDER BY teams    ;                                                                                        
