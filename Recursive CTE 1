@@ -1,0 +1,34 @@
+Suppose we want to compute how many raw materials are needed to build a bicycle. Consider the following BOM:
+
+
+CREATE TEMPORARY VIEW bill_of_materials(parent, component, quantity) AS VALUES
+  ('Bike', 'Frame', 1),
+  ('Bike', 'Wheels', 2),
+  ('Bike', 'Drivetrain', 1),
+  ('Wheels', 'Spokes', 32),
+  ('Wheels', 'Tire', 1),
+  ('Drivetrain', 'Crankset', 1),
+  ('Drivetrain', 'Chain', 1),
+  ('Crankset', 'Pedal', 2);   
+
+
+select * from bill_of_materials  ;
+
+
+with recursive bom_qty as (
+select  component, quantity 
+from bill_of_materials 
+where parent='Bike'
+
+union all 
+
+select b.component, b.quantity * t.quantity 
+from bill_of_materials b 
+join bom_qty t on b.parent=t.component 
+
+)
+
+select component,  quantity AS total_quantity
+from bom_qty   
+where component not in ( SELECT parent FROM bill_of_materials  )
+ORDER BY total_quantity     ;
